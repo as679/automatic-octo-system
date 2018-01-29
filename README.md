@@ -1,4 +1,4 @@
-##Terraform Variables
+## Terraform Variables
 
 Terraform automatically loads the files
 - `terraform.tfvars`
@@ -6,7 +6,7 @@ Terraform automatically loads the files
 
 We can use the `terraform.tfvars` for the private information such as the AWS key and secret
 
-##Image Handling
+## Image Handling
 
 Currently image IDs are statically stored in a region / ID map variable, for example:
 ```
@@ -37,11 +37,11 @@ sort_by(.CreationDate) | \
 last(.[]).ImageId'
 ```
 
-######Notes
+###### Notes
 - aws aws cli accepts the `--region` option
 - the above requires the [jq software](https://stedolan.github.io/jq/)
 
-##Key Handling
+## Key Handling
 
 There are two required key pairs:
 - A pair to access the environment from outside, `training-access`
