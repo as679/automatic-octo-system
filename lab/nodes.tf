@@ -8,7 +8,7 @@ resource "aws_instance" "node1" {
   subnet_id              = "${element(aws_subnet.PoolNet.*.id, count.index)}"
   private_ip             = "172.16.2.21"
   source_dest_check      = false
-  #user_data              = "${file("${path.module}/userdata/node1.userdata")}"
+  user_data              = "${file("${path.module}/userdata/node1.userdata")}"
   depends_on             = ["aws_nat_gateway.ngw"]
 
   tags {
@@ -33,7 +33,7 @@ resource "aws_instance" "node2" {
   subnet_id              = "${element(aws_subnet.PoolNet.*.id, count.index)}"
   private_ip             = "172.16.2.22"
   source_dest_check      = false
-  #user_data              = "${file("${path.module}/userdata/node2.userdata")}"
+  user_data              = "${file("${path.module}/userdata/node2.userdata")}"
   depends_on             = ["aws_nat_gateway.ngw"]
 
   tags {

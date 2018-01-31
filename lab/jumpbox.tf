@@ -33,7 +33,7 @@ resource "aws_instance" "jump" {
   subnet_id                   = "${element(aws_subnet.pubnet.*.id, count.index)}"
   associate_public_ip_address = true
   source_dest_check           = false
-  #user_data                   = "${file("${path.module}/userdata/jumpbox.userdata")}"
+  user_data                   = "${file("${path.module}/userdata/jumpbox.userdata")}"
   depends_on                  = ["aws_internet_gateway.igw"]
 
   tags {

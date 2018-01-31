@@ -1,1 +1,10 @@
 #cloud-config
+users:
+  - name: training
+    lock_passwd: true
+    gecos: Cloud User
+    groups: [wheel, adm, systemd-journal]
+    sudo: ["ALL=(ALL) NOPASSWD:ALL"]
+    shell: /bin/bash
+    ssh-authorized-keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDWDH2XT+4kUE2trc51/UFy1m86+DV2yUfUjbbNhztwp5dOKkI0d3q6Rd9LSajL3ogmfJ1ecqV2eixLHTRaphqe1QM7tOK3JdMo8WN3TgZXPBM01eInD6xPSqHxdsL+4CYu3TTnwzkZjN38x21OQJAP2k4LupTfJFF3Ce7+htmUiFzvMsAhBDyV2OsjRXwgSdXFToiI0nSCrdVaVlBdqA5GMpucyCcQ8bO69ddfi62f55Qrv5NcXVX1ZZI2gonFl+VGXwAzPRyzpfTDx0F4AM4KBRXqyFzW/CqzESWYg+lB1xLSLttlRFplNa/B3C90vp65Hu261hm3TZRB5SdSgQ0N

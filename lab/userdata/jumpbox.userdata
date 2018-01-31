@@ -1,1 +1,60 @@
 #cloud-config
+users:
+  - name: training
+    lock_passwd: true
+    gecos: Cloud User
+    groups: [wheel, adm, systemd-journal]
+    sudo: ["ALL=(ALL) NOPASSWD:ALL"]
+    shell: /bin/bash
+    ssh-authorized-keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCkUH0LmRDDoAbqWcnbOCZdta4hy3JW1ahqECKXU7+tO9AgG3wP/1E1XncY1QP2r88iQaCa4vgKbFDvt56cdQLDf8GTr2Xb9HWtGCcEuLvSlKk3TDNt4bL3fNb2NIs+0iQ4L7eEY8zkpAXs5faZ2GN6L/ES/u7wuoZvHie1DxQPWxJYo9gkLu4/m2XDZ+2Fcr99gm3FnmPUo3nGccmnpZEbBldwWmydv2gmsHEyMSVapzarIHIsXmjVDhAVmdsUq8tsuWHhXi2v1LF51mY4i5c2rbV2Pa0CZcHam8QJ2cMk9mdOTmR0SBAJd/JDD8HmGmfx3nFF9lp2qiglkKjXgr8d
+
+write_files:
+  - content: |
+        #!/bin/sh
+        hostnamectl set-hostname --static jumpbox
+        echo 'preserve_hostname: true' >> /etc/cloud/cloud.cfg
+        cat /opt/lab_hosts >> /etc/hosts
+        mv /opt/training_id /home/training/.ssh/id_rsa
+        chown training.training /home/training/.ssh/id_rsa
+    path: /opt/bootstrap.sh
+    permissions: 0755
+  - content: |
+        172.16.1.11 ctrl1
+        172.16.2.21 node1
+        172.16.2.22 node2
+    path: /opt/lab_hosts
+    permissions: 0755
+  - content: |
+        -----BEGIN RSA PRIVATE KEY-----
+        MIIEpAIBAAKCAQEA1gx9l0/uJFBNra3Odf1BctZvOvg1dslH1I22zYc7cKeXTipC
+        NHd6ukXfS0moy96IJnydXnKldnosSx00WqYantUDO7TityXTKPFjd04GVzwTNNXi
+        Jw+sT0qh8XbC/uAmLt0058M5GYzd/MdtTkCQD9pOC7qU3yRRdwnu/obZlIhc7zLA
+        IQQ8ldjrI0V8IEnVxU6IiNJ0gq3VWlZQXagORjKbnMgnEPGzuvXXX4utn+eUK7+T
+        XF1V9WWSNoKJxZflRl8AMz0cs6X0w8dBeADOCgUV6shc1vwqsxElmIPpQdcS0i7b
+        ZURaZTWvwdwvdL6euR7tutYZt02UQeUnUoENDQIDAQABAoIBAHBYsfqfa2EH/R1x
+        onHvcVCzGEKdUIJ+dwMrNo19s0cXz6SpLYKYS4RFdEPx73TB4jhBI+AU0J/01BbA
+        x1/k2wgOydmmwXBbnA9bU1elTlKvJ22N7VuPMGOVypYQPZzFTYU/eatDnk64zzME
+        AW0XGgYYEOq7DbRpPZD7V8OkR8NbMZilkWPQ7Y1W00RSx7nQeQvSKVMmtzSSB039
+        0t+JsC3zZBv8b0CbjIifGj6Rs1rKMaYO/Me1pjOvAurZyGkSNNHC7l0+gsiCUhar
+        y3qBs2mZPPhL1uLJbvr45L54A6I+3FulliHBBbCKS3RxGgIrs9uIpaXlKpMG7ri2
+        sfYfecECgYEA7fFy0bPcabg7o6xLldYAS3JG9A5Ct8uKHexJZvng5juqaZURV9gk
+        sEhDkT8lRsEE7DGZhhoEV2r0sKmU29gAwUX4115fhrd0TZXybsmYLAODp9i2Kprz
+        uUe115XrzpsmnRV9LN3tf9y/d9BEpey+DBEQtaXwzVt6B7yb69YhtYkCgYEA5krX
+        3ZEVp4FAsUkdzQMA5as6B7w3krdl9DBJMBTXP644k8v2nEdw+TxmbjaUFUypnXtM
+        Jmx/Yd7fRosfR8TRIb1FfKUy2DbFf0fsxWq4QExmFS7tH/OaKjVfByoMLGBx/ByB
+        rjxjBLvuzHEW061CsKPD2M0lW6iaz4xvXJVDfmUCgYEAgLQeUDHComil0cVraRPF
+        OwoIORDRo8rz3XWmyo2UydQyPEQGioZ+ad/ctF78kcXsHLpDeZbvDD3tNvWzcCrp
+        VaG8lPoWH69xuFnINYbTydLozsxY1LjV5j1UrdUJJMslWsh52d/9DDFiW7OKvllM
+        /wfoCulEVEALxM2PZUSBHUkCgYB4tPwGn5hZDw+InUlofs2GlEQ7b7U1Srm+z1xd
+        Pl9AeqIfHcZqTavyh20tEaB2tZMl/01/yljORNKFGEDSDmCLrbhxR+mpmLPWLi31
+        oCVpVmIfclRJ7hZ9TzI7ABgXXooAWjTCzdYc0iCtugz78JHHIl9yEL0nGO3kIbjx
+        Ly+MXQKBgQCWO0djnm+OixBoBmfecqg3s/JONYvsEnKChZhGiiY+LTtakPcM+yib
+        Bbj3RQuZi0LfPMmyg8XZ3jrJYvYKNuPpVC8CM26hznUIjpHsTzfU7wQFZazaOnsr
+        2WMpFXAEhJd4EW4u3ATqQj78SlwioRjhSVNZfa/ap/y7SkzYywqw1g==
+        -----END RSA PRIVATE KEY-----
+    path: /opt/training_id
+    permissions: 0600
+
+runcmd:
+  - /opt/bootstrap.sh
