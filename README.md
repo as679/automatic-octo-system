@@ -38,7 +38,7 @@ last(.[]).ImageId'
 ```
 
 ###### Notes
-- aws aws cli accepts the `--region` option
+- aws cli accepts the `--region` option
 - the above requires the [jq software](https://stedolan.github.io/jq/)
 
 ## Key Handling
