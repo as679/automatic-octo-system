@@ -23,6 +23,17 @@ resource "aws_security_group" "pubsg" {
   }
 }
 
+data "template_file" "jumpbox_userdata" {
+  template = "${file("${path.module}/userdata/jumpbox.userdata")}"
+  vars {
+    hostname = "${var.sid}${count.index + 1}_JumpHost"
+    aws_access_key = "${var.aws_access_key}"
+    aws_secret_key = "${var.aws_secret_key}"
+    aws_region = "${var.aws_region}"
+    pkey = "${var.pkey_training_internal}"
+  }
+}
+
 resource "aws_instance" "jump" {
   count = "${var.lab_count}"
   ami                         = "${lookup(var.ami_centos, var.aws_region)}"
@@ -33,7 +44,7 @@ resource "aws_instance" "jump" {
   subnet_id                   = "${element(aws_subnet.pubnet.*.id, count.index)}"
   associate_public_ip_address = true
   source_dest_check           = false
-  user_data                   = "${file("${path.module}/userdata/jumpbox.userdata")}"
+  user_data                   = "${data.template_file.jumpbox_userdata.rendered}"
   depends_on                  = ["aws_internet_gateway.igw"]
 
   tags {

@@ -1,4 +1,7 @@
 variable "aws_region" {}
+variable "aws_access_key" {}
+variable "aws_secret_key" {}
+variable "pkey_training_internal" {}
 
 variable "aws_az" {
   type        = "map"

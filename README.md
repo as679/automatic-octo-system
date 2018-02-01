@@ -1,4 +1,19 @@
-## Terraform Variables
+## External IP addresses
+
+We can query the Terraform state files to get what we need. Why not use the Terraform output?
+I haven't figured out how to use the looping syntax within the output...
+
+This works:
+```
+for i in 0 1; do
+  ip=`terraform state show module.aws_lab.aws_instance.jump[$i] | \
+    grep -i '^public_ip' | \
+    awk '{print $3}'`; let num=$i+1
+  echo "Student${num}_Jumphost: ${ip}"
+done
+```
+
+## Terraform variables
 
 Terraform automatically loads the files
 - `terraform.tfvars`
@@ -6,7 +21,7 @@ Terraform automatically loads the files
 
 We can use the `terraform.tfvars` for the private information such as the AWS key and secret
 
-## Image Handling
+## Image handling
 
 Currently image IDs are statically stored in a region / ID map variable, for example:
 ```
@@ -41,7 +56,7 @@ last(.[]).ImageId'
 - aws cli accepts the `--region` option
 - the above requires the [jq software](https://stedolan.github.io/jq/)
 
-## Key Handling
+## Key handling
 
 There are two required key pairs:
 - A pair to access the environment from outside, `training-access`
