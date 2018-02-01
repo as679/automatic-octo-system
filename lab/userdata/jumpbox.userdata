@@ -17,6 +17,9 @@ write_files:
         cat /opt/lab_hosts >> /etc/hosts
         mv /opt/training_id /home/training/.ssh/id_rsa
         chown training.training /home/training/.ssh/id_rsa
+        yum install ansible -y
+        cp /opt/bootstrap_inventory /etc/ansible/hosts
+        touch /tmp/cloud-init.done
     path: /opt/bootstrap.sh
     permissions: 0755
   - content: |
@@ -55,6 +58,14 @@ write_files:
         -----END RSA PRIVATE KEY-----
     path: /opt/training_id
     permissions: 0600
+  - content: |
+        [servers]
+        node1
+        node2
+        [controllers]
+        ctrl1
+    path: /opt/bootstrap_inventory
+    permissions: 0755
 
 runcmd:
   - /opt/bootstrap.sh

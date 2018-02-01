@@ -1,3 +1,10 @@
+data "template_file" "node1_userdata" {
+  template = "${file("${path.module}/userdata/node.userdata")}"
+  vars {
+    hostname = "${var.sid}${count.index + 1}_node1"
+  }
+}
+
 resource "aws_instance" "node1" {
   count                  = "${var.lab_count}"
   ami                    = "${lookup(var.ami_centos, var.aws_region)}"
@@ -8,7 +15,7 @@ resource "aws_instance" "node1" {
   subnet_id              = "${element(aws_subnet.PoolNet.*.id, count.index)}"
   private_ip             = "172.16.2.21"
   source_dest_check      = false
-  user_data              = "${file("${path.module}/userdata/node1.userdata")}"
+  user_data              = "${data.template_file.node1_userdata.rendered}"
   depends_on             = ["aws_nat_gateway.ngw"]
 
   tags {
@@ -23,6 +30,13 @@ resource "aws_instance" "node1" {
   }
 }
 
+data "template_file" "node2_userdata" {
+  template = "${file("${path.module}/userdata/node.userdata")}"
+  vars {
+    hostname = "${var.sid}${count.index + 1}_node2"
+  }
+}
+
 resource "aws_instance" "node2" {
   count                  = "${var.lab_count}"
   ami                    = "${lookup(var.ami_centos, var.aws_region)}"
@@ -33,7 +47,7 @@ resource "aws_instance" "node2" {
   subnet_id              = "${element(aws_subnet.PoolNet.*.id, count.index)}"
   private_ip             = "172.16.2.22"
   source_dest_check      = false
-  user_data              = "${file("${path.module}/userdata/node2.userdata")}"
+  user_data              = "${data.template_file.node2_userdata.rendered}"
   depends_on             = ["aws_nat_gateway.ngw"]
 
   tags {
