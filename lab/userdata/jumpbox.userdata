@@ -47,7 +47,7 @@ write_files:
     path: /opt/training_id
     permissions: 0600
   - content: |
-        [servers]
+        [nodes]
         node1
         node2
         [controllers]

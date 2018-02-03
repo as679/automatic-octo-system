@@ -26,7 +26,7 @@ resource "aws_security_group" "pubsg" {
 data "template_file" "jumpbox_userdata" {
   template = "${file("${path.module}/userdata/jumpbox.userdata")}"
   vars {
-    hostname = "${var.sid}${count.index + 1}_JumpHost"
+    hostname = "${var.sid}${count.index + 1}jumpbox"
     aws_access_key = "${var.aws_access_key}"
     aws_secret_key = "${var.aws_secret_key}"
     aws_region = "${var.aws_region}"
@@ -48,7 +48,7 @@ resource "aws_instance" "jump" {
   depends_on                  = ["aws_internet_gateway.igw"]
 
   tags {
-    Name = "${var.sid}${count.index + 1}_JumpHost"
+    Name = "${var.sid}${count.index + 1}jumpbox"
     Owner = "${var.owner}"
   }
 

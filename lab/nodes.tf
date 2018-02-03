@@ -1,7 +1,8 @@
+
 data "template_file" "node1_userdata" {
   template = "${file("${path.module}/userdata/node.userdata")}"
   vars {
-    hostname = "${var.sid}${count.index + 1}_node1"
+    hostname = "${var.sid}${count.index + 1}node1"
   }
 }
 
@@ -19,7 +20,7 @@ resource "aws_instance" "node1" {
   depends_on             = ["aws_nat_gateway.ngw"]
 
   tags {
-    Name = "${var.sid}${count.index + 1}_node1"
+    Name = "${var.sid}${count.index + 1}node1"
     Owner = "${var.owner}"
   }
 
@@ -33,7 +34,7 @@ resource "aws_instance" "node1" {
 data "template_file" "node2_userdata" {
   template = "${file("${path.module}/userdata/node.userdata")}"
   vars {
-    hostname = "${var.sid}${count.index + 1}_node2"
+    hostname = "${var.sid}${count.index + 1}node2"
   }
 }
 
@@ -51,7 +52,7 @@ resource "aws_instance" "node2" {
   depends_on             = ["aws_nat_gateway.ngw"]
 
   tags {
-    Name = "${var.sid}${count.index + 1}_node2"
+    Name = "${var.sid}${count.index + 1}node2"
     Owner = "${var.owner}"
   }
 

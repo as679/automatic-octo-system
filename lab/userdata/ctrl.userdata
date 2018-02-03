@@ -1,3 +1,23 @@
 #cloud-config
 users:
   - default
+
+write_files:
+  - content: |
+      #!/bin/sh
+      wget http://s3.amazonaws.com/ec2-downloads/ec2-api-tools-1.7.5.1.zip
+      unzip ec2-api-tools-1.7.5.1.zip
+      sudo mv ec2-api-tools-1.7.5.1 /usr/local/ec2
+      echo "EC2_HOME=\"/usr/local/ec2i\"" >> /home/admin/.bashrc
+      echo "JAVA_HOME=\"/usr/lib/jvm/java-7-openjdk-amd64/jre\"" >> /home/admin/.bashrc
+      echo "PATH=\"$PATH:$EC2_HOME/bin\"" >> /home/admin/.bashrc
+      sudo sed -i -e 's/ec2-import-volume/\/usr\/local\/ec2\/bin\/ec2-import-volume/g' /opt/avi/python/lib/avi/util/aws_utils.py
+      sudo sed -i -e 's/ec2-describe-conversion-tasks/\/usr\/local\/ec2\/bin\/ec2-describe-conversion-tasks/g' /opt/avi/python/lib/avi/util/aws_utils.py
+      sudo sed -i -e 's/ec2-cancel-conversion-task/\/usr\/local\/ec2\/bin\/ec2-cancel-conversion-task/g' /opt/avi/python/lib/avi/util/aws_utils.py
+      sudo sed -i -e '146i\        env["EC2_HOME"] = "/usr/local/ec2"\n        env["JAVA_HOME"] = "/usr/lib/jvm/java-7-openjdk-amd64/jre"\n        env["PATH"] = env["PATH"] + ":/usr/local/ec2/bin"' /opt/avi/python/lib/avi/util/aws_utils.py
+      sudo restart cloud_connector
+    path: /root/patch_awscc.sh
+    permissions: 0755
+
+runcmd:
+  - /root/patch_awscc.sh >> /tmp/patch.output 2<&1

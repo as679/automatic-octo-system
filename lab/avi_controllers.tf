@@ -12,7 +12,7 @@ resource "aws_instance" "ctrl" {
   user_data              = "${file("${path.module}/userdata/ctrl.userdata")}"
 
   tags {
-    Name = "${var.sid}${count.index + 1}_ctrl"
+    Name = "${var.sid}${count.index + 1}controller"
     Owner = "${var.owner}"
   }
 }

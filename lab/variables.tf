@@ -50,7 +50,7 @@ variable "ami_avi_controller" {
   type        = "map"
   default = {
     us-west-2 = "ami-2c0bbf54"
-    eu-west-2 = "ami-9caeb6f8"
+    eu-west-2 = "ami-58f2e83c"
   }
 }
 
