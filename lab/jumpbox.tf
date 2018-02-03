@@ -34,6 +34,22 @@ data "template_file" "jumpbox_userdata" {
   }
 }
 
+resource "aws_network_interface" "jump_mgmtnic" {
+  count             = "${var.lab_count}"
+  subnet_id         = "${element(aws_subnet.Management.*.id, count.index)}"
+  private_ips       = ["172.16.1.5"]
+  security_groups   = ["${element(aws_security_group.privsg.*.id, count.index)}"]
+  source_dest_check = false
+  depends_on = ["aws_instance.jump"]
+  attachment {
+    instance     = "${element(aws_instance.jump.*.id, count.index)}"
+    device_index = 1
+  }
+  tags {
+    Name = "${var.sid}${count.index + 1}jumpbox_mgmtnic"
+  }
+}
+
 resource "aws_instance" "jump" {
   count = "${var.lab_count}"
   ami                         = "${lookup(var.ami_centos, var.aws_region)}"

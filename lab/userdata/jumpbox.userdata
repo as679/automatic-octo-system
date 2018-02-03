@@ -14,6 +14,7 @@ write_files:
         #!/bin/sh
         hostnamectl set-hostname --static ${hostname}
         echo 'preserve_hostname: true' >> /etc/cloud/cloud.cfg
+        ifup eth1
         cat /opt/lab_hosts >> /etc/hosts
         mv /opt/training_id /home/training/.ssh/id_rsa
         chown training.training /home/training/.ssh/id_rsa
@@ -24,6 +25,17 @@ write_files:
         touch /tmp/cloud-init.done
     path: /opt/bootstrap.sh
     permissions: 0755
+  - content: |
+        DEVICE=eth1
+        BOOTPROTO=dhcp
+        ONBOOT=yes
+        DEFROUTE=no
+    path: /etc/sysconfig/network-scripts/ifcfg-eth1
+    permissions: 0644
+  - content: |
+        172.16.0.0/16 via 172.16.1.1 dev eth1
+    path: /etc/sysconfig/network-scripts/route-eth1
+    permissions: 0644
   - content: |
         172.16.1.11 ctrl1
         172.16.2.21 node1
