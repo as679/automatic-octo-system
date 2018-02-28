@@ -1,3 +1,24 @@
+resource "aws_network_interface" "ctrl_publicnic" {
+  count             = "${var.lab_count}"
+  subnet_id         = "${element(aws_subnet.pubnet.*.id, count.index)}"
+  #private_ips       = ["172.16.1.5"]
+  security_groups   = ["${element(aws_security_group.pubsg.*.id, count.index)}"]
+  source_dest_check = false
+  depends_on = ["aws_instance.ctrl"]
+  attachment {
+    instance     = "${element(aws_instance.ctrl.*.id, count.index)}"
+    device_index = 2
+  }
+  tags {
+    Name = "${var.sid}${count.index + 1}ctrl_publicnic"
+  }
+}
+
+resource "aws_eip" "ctrl_eip" {
+  count = "${var.lab_count}"
+  vpc                       = true
+  network_interface         = "${element(aws_network_interface.ctrl_publicnic.*.id, count.index)}"
+}
 
 resource "aws_instance" "ctrl" {
   count                  = "${var.lab_count}"
