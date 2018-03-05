@@ -16,8 +16,5 @@ write_files:
       sudo sed -i -e 's/ec2-cancel-conversion-task/\/usr\/local\/ec2\/bin\/ec2-cancel-conversion-task/g' /opt/avi/python/lib/avi/util/aws_utils.py
       sudo sed -i -e '146i\        env["EC2_HOME"] = "/usr/local/ec2"\n        env["JAVA_HOME"] = "/usr/lib/jvm/java-7-openjdk-amd64/jre"\n        env["PATH"] = env["PATH"] + ":/usr/local/ec2/bin"' /opt/avi/python/lib/avi/util/aws_utils.py
       sudo restart cloud_connector
-    path: /root/patch_awscc.sh
+    path: /root/patch_aws_cc.sh
     permissions: 0755
-
-runcmd:
-  - /root/patch_awscc.sh >> /tmp/patch.output 2<&1

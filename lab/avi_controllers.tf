@@ -30,10 +30,14 @@ resource "aws_instance" "ctrl" {
   subnet_id              = "${element(aws_subnet.Management.*.id, count.index)}"
   private_ip             = "172.16.1.11"
   source_dest_check      = false
-  user_data              = "${file("${path.module}/userdata/ctrl.userdata")}"
+  #user_data              = "${file("${path.module}/userdata/ctrl.userdata")}"
 
   tags {
     Name = "${var.sid}${count.index + 1}controller"
     Owner = "${var.owner}"
   }
+}
+
+output "AviController" {
+  value = "${aws_eip.ctrl_eip.*.public_ip}"
 }

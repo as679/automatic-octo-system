@@ -88,3 +88,7 @@ resource "aws_instance" "jump" {
     delete_on_termination = "true"
   }
 }
+
+output "JumpHost" {
+  value = "${aws_instance.jump.*.public_ip}"
+}
