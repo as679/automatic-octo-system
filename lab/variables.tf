@@ -49,8 +49,10 @@ variable "ami_centos" {
 variable "ami_avi_controller" {
   type        = "map"
   default = {
-    us-west-2 = "ami-2c0bbf54"
-    eu-west-2 = "ami-58f2e83c"
+    #us-west-2 = "ami-2c0bbf54"
+    us-west-2 = "ami-a0961dd8"
+    #eu-west-2 = "ami-58f2e83c"
+    eu-west-2 = "ami-bb8d6adc"
   }
 }
 
