@@ -14,6 +14,9 @@ write_files:
         #!/bin/sh
         hostnamectl set-hostname --static ${hostname}
         echo 'preserve_hostname: true' >> /etc/cloud/cloud.cfg
+        yum install ansible -y
+        yum install git -y
+        ansible-pull -U https://github.com/as679/fluffy-octo-palm-tree.git -C bootstrap webserver.yml
         touch /tmp/cloud-init.done
     path: /opt/bootstrap.sh
     permissions: 0755
