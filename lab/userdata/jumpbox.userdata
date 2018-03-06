@@ -41,8 +41,8 @@ write_files:
     permissions: 0644
   - content: |
         172.16.1.11 ctrl1
-        172.16.2.21 node1
-        172.16.2.22 node2
+        172.16.2.21 server1
+        172.16.2.22 server2
     path: /opt/lab_hosts
     permissions: 0755
   - content: |
@@ -90,9 +90,9 @@ write_files:
     path: /opt/training_id
     permissions: 0600
   - content: |
-        [nodes]
-        node1
-        node2
+        [servers]
+        server1
+        server2
         [controllers]
         ctrl1
     path: /opt/bootstrap_inventory
