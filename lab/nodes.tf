@@ -1,12 +1,12 @@
 
-data "template_file" "node1_userdata" {
-  template = "${file("${path.module}/userdata/node.userdata")}"
+data "template_file" "server1_userdata" {
+  template = "${file("${path.module}/userdata/server.userdata")}"
   vars {
-    hostname = "${var.sid}${count.index + 1}node1"
+    hostname = "${var.sid}${count.index + 1}server1"
   }
 }
 
-resource "aws_instance" "node1" {
+resource "aws_instance" "server1" {
   count                  = "${var.lab_count}"
   ami                    = "${lookup(var.ami_centos, var.aws_region)}"
   availability_zone      = "${lookup(var.aws_az, var.aws_region)}"
@@ -16,11 +16,11 @@ resource "aws_instance" "node1" {
   subnet_id              = "${element(aws_subnet.PoolNet.*.id, count.index)}"
   private_ip             = "172.16.2.21"
   source_dest_check      = false
-  user_data              = "${data.template_file.node1_userdata.rendered}"
+  user_data              = "${data.template_file.server1_userdata.rendered}"
   depends_on             = ["aws_nat_gateway.ngw"]
 
   tags {
-    Name = "${var.sid}${count.index + 1}node1"
+    Name = "${var.sid}${count.index + 1}server1"
     Owner = "${var.owner}"
   }
 
@@ -31,14 +31,14 @@ resource "aws_instance" "node1" {
   }
 }
 
-data "template_file" "node2_userdata" {
-  template = "${file("${path.module}/userdata/node.userdata")}"
+data "template_file" "server2_userdata" {
+  template = "${file("${path.module}/userdata/server.userdata")}"
   vars {
-    hostname = "${var.sid}${count.index + 1}node2"
+    hostname = "${var.sid}${count.index + 1}server2"
   }
 }
 
-resource "aws_instance" "node2" {
+resource "aws_instance" "server2" {
   count                  = "${var.lab_count}"
   ami                    = "${lookup(var.ami_centos, var.aws_region)}"
   availability_zone      = "${lookup(var.aws_az, var.aws_region)}"
@@ -48,11 +48,11 @@ resource "aws_instance" "node2" {
   subnet_id              = "${element(aws_subnet.PoolNet.*.id, count.index)}"
   private_ip             = "172.16.2.22"
   source_dest_check      = false
-  user_data              = "${data.template_file.node2_userdata.rendered}"
+  user_data              = "${data.template_file.server2_userdata.rendered}"
   depends_on             = ["aws_nat_gateway.ngw"]
 
   tags {
-    Name = "${var.sid}${count.index + 1}node2"
+    Name = "${var.sid}${count.index + 1}server2"
     Owner = "${var.owner}"
   }
 
